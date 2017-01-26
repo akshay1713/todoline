@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/akshaysingh1713/todoline/climanager"
 	"github.com/urfave/cli"
 	"os"
 )
@@ -23,9 +24,11 @@ func main() {
 					Name:  "add",
 					Usage: "Add new projects",
 					Action: func(c *cli.Context) error {
+						auth_token := getAuthToken()
+						cm := climanager.InitCliManager(auth_token)
 						project_names := c.Args()
 						fmt.Println("Adding Projects")
-						addProjects(project_names)
+						cm.AddProjects(project_names)
 						return nil
 					},
 				},
@@ -33,7 +36,9 @@ func main() {
 					Name:  "list",
 					Usage: "List All Projects",
 					Action: func(c *cli.Context) error {
-						listProjects()
+						auth_token := getAuthToken()
+						cm := climanager.InitCliManager(auth_token)
+						cm.ListProjects()
 						return nil
 					},
 				},
@@ -50,4 +55,10 @@ func main() {
 		},
 	}
 	app.Run(os.Args)
+}
+
+func getAuthToken() string {
+	config := getConfig()
+	auth_token := config.Get("auth_token").(string)
+	return auth_token
 }

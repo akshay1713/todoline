@@ -1,15 +1,11 @@
-package main
+package climanager
 
 import (
 	"fmt"
-	"github.com/akshaysingh1713/todoline/resources"
 )
 
-func listProjects() {
-	config := getConfig()
-	auth_token := config.Get("auth_token").(string)
-	resources := resources.InitResources(auth_token)
-	projects, err := resources.GetAllProjects()
+func (cm CliManager) ListProjects() {
+	projects, err := cm.resources.GetAllProjects()
 	for _, project := range projects {
 		fmt.Printf("%s -  %v\n", project["name"], int(project["id"].(float64)))
 	}
@@ -18,14 +14,11 @@ func listProjects() {
 	}
 }
 
-func addProjects(project_names []string) {
-	config := getConfig()
-	auth_token := config.Get("auth_token").(string)
-	resources := resources.InitResources(auth_token)
+func (cm CliManager) AddProjects(project_names []string) {
 	if len(project_names) == 0 {
 		fmt.Println("at least one project name is required")
 	}
-	response, err := resources.AddProject(project_names)
+	response, err := cm.resources.AddProject(project_names)
 	if err != nil {
 		fmt.Println(err)
 	} else if response["status"] == "200 OK" {
