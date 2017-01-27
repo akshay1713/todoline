@@ -1,9 +1,5 @@
 package resources
 
-import (
-//"github.com/akshaysingh1713/gotodoist"
-)
-
 func (resources Resources) GetAllProjects() ([]map[string]interface{}, error) {
 	response, err := resources.todoistAPI.Projects.GetAll()
 	resp_body := response["body"].(map[string]interface{})

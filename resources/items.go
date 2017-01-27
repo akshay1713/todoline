@@ -15,3 +15,8 @@ func (resources Resources) AddItem(item_names []string, project_id int64) (map[s
 	response, err := resources.todoistAPI.Items.Add(item_names, project_id)
 	return response, err
 }
+
+func (resources Resources) CompleteItems(item_ids []int64) (map[string]interface{}, error) {
+	response, err := resources.todoistAPI.Items.Complete(item_ids)
+	return response, err
+}

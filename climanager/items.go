@@ -6,6 +6,49 @@ import (
 
 func (cm CliManager) ListItems() {
 	items, err := cm.resources.GetAllItems()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	printItems(items)
+}
+
+func (cm CliManager) ListItemsForProject(project_id int64) {
+	items, err := cm.resources.GetAllItems()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	var project_items []map[string]interface{}
+	for _, item := range items {
+		if int64(item["project_id"].(float64)) == project_id {
+			project_items = append(project_items, item)
+		}
+	}
+	printItems(project_items)
+
+}
+
+func (cm CliManager) AddItems(item_names []string, project_id int64) {
+	response, err := cm.resources.AddItem(item_names, project_id)
+	fmt.Println(response)
+	if err != nil {
+		fmt.Println(err)
+	} else if response["status"] == "200 OK" {
+		fmt.Println("Added items successfully")
+	} else {
+		fmt.Println("Unexpected response " + response["status"].(string))
+	}
+}
+
+func (cm CliManager) CompleteItems(item_ids []int64) {
+	response, err := cm.resources.CompleteItems(item_ids)
+	if err != nil {
+		fmt.Println("Error occured:\n%v", response)
+	}
+}
+
+func printItems(items []map[string]interface{}) {
 	var indent, checked int
 	var content string
 	closed := "\u2713"
@@ -24,23 +67,5 @@ func (cm CliManager) ListItems() {
 		}
 		content += item["content"].(string)
 		fmt.Printf("%s -  %v\n", content, int(item["id"].(float64)))
-	}
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-func (cm CliManager) AddItems(item_names []string, project_id int64) {
-	if len(item_names) == 0 {
-		fmt.Println("at least one item name is required")
-	}
-	response, err := cm.resources.AddItem(item_names, project_id)
-	fmt.Println(response)
-	if err != nil {
-		fmt.Println(err)
-	} else if response["status"] == "200 OK" {
-		fmt.Println("Added items successfully")
-	} else {
-		fmt.Println("Unexpected response " + response["status"].(string))
 	}
 }
