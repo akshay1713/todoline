@@ -15,3 +15,8 @@ func (resources Resources) AddProject(project_names []string) (map[string]interf
 	response, err := resources.todoistAPI.Projects.Add(project_names)
 	return response, err
 }
+
+func (resources Resources) DeleteProjects(project_ids []int64) (map[string]interface{}, error) {
+	response, err := resources.todoistAPI.Projects.Delete(project_ids)
+	return response, err
+}

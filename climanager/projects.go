@@ -55,3 +55,13 @@ func (cm CliManager) GetInboxId() int64 {
 	}
 	return -1
 }
+
+func (cm CliManager) DeleteProjects(project_ids []int64) {
+	response, err := cm.resources.DeleteProjects(project_ids)
+	if err != nil {
+		fmt.Println("Error while deleting projects:\n")
+		fmt.Println(err)
+	} else if response["status"] == "200 OK" {
+		fmt.Println("Deleted project(s) successfully")
+	}
+}

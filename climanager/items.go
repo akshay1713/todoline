@@ -69,3 +69,13 @@ func printItems(items []map[string]interface{}) {
 		fmt.Printf("%s -  %v\n", content, int(item["id"].(float64)))
 	}
 }
+
+func (cm CliManager) DeleteItems(item_ids []int64) {
+	response, err := cm.resources.DeleteItems(item_ids)
+	if err != nil {
+		fmt.Println("Error while deleting items:\n")
+		fmt.Println(err)
+	} else if response["status"] == "200 OK" {
+		fmt.Println("Deleted item(s) successfully")
+	}
+}

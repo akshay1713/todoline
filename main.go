@@ -76,6 +76,27 @@ func main() {
 						return nil
 					},
 				},
+				{
+					Name:  "delete",
+					Usage: "Delete the given project",
+					Action: func(c *cli.Context) error {
+						auth_token := getAuthToken()
+						cm := climanager.InitCliManager(auth_token)
+						args := c.Args()
+						var project_ids []int64
+						var id int64
+						var parse_err error
+						for _, id_string := range args {
+							id, parse_err = strconv.ParseInt(id_string, 10, 64)
+							if parse_err != nil {
+								fmt.Println(id_string + " is not a valid id. Please enter valid project ids")
+							}
+							project_ids = append(project_ids, id)
+						}
+						cm.DeleteProjects(project_ids)
+						return nil
+					},
+				},
 			},
 		},
 		{
@@ -164,6 +185,27 @@ func main() {
 						return nil
 					},
 				},
+				{
+					Name:  "delete",
+					Usage: "Delete the given project",
+					Action: func(c *cli.Context) error {
+						auth_token := getAuthToken()
+						cm := climanager.InitCliManager(auth_token)
+						args := c.Args()
+						var item_ids []int64
+						var id int64
+						var parse_err error
+						for _, id_string := range args {
+							id, parse_err = strconv.ParseInt(id_string, 10, 64)
+							if parse_err != nil {
+								fmt.Println(id_string + " is not a valid id. Please enter valid project ids")
+							}
+							item_ids = append(item_ids, id)
+						}
+						cm.DeleteItems(item_ids)
+						return nil
+					},
+				},
 			},
 		},
 		{
@@ -173,12 +215,12 @@ func main() {
 				auth_token := c.Args().Get(0)
 				fmt.Println("Creating config file and storing the token in it")
 				setupConfig(auth_token)
-				fmt.Println("Getting inbox id and storing it")
-				cm := climanager.InitCliManager(auth_token)
-				inbox_id := cm.GetInboxId()
-				if inbox_id > 0 {
-					saveInboxId(inbox_id)
-				}
+				//fmt.Println("Getting inbox id and storing it")
+				//cm := climanager.InitCliManager(auth_token)
+				//inbox_id := cm.GetInboxId()
+				//if inbox_id > 0 {
+				//saveInboxId(inbox_id)
+				//}
 				return nil
 			},
 		},
@@ -188,8 +230,12 @@ func main() {
 
 func getAuthToken() string {
 	config := getConfig()
-	auth_token := config.Get("auth_token").(string)
-	return auth_token
+	auth_token := config.Get("auth_token")
+	if auth_token == nil {
+		fmt.Println("Auth token not found in config file. Please run setup and provide your auth token")
+		return ""
+	}
+	return auth_token.(string)
 }
 
 func readLine(path string) []string {

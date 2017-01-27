@@ -20,3 +20,8 @@ func (resources Resources) CompleteItems(item_ids []int64) (map[string]interface
 	response, err := resources.todoistAPI.Items.Complete(item_ids)
 	return response, err
 }
+
+func (resources Resources) DeleteItems(item_ids []int64) (map[string]interface{}, error) {
+	response, err := resources.todoistAPI.Items.Delete(item_ids)
+	return response, err
+}
