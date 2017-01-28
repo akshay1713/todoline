@@ -20,3 +20,13 @@ func (resources Resources) DeleteProjects(project_ids []int64) (map[string]inter
 	response, err := resources.todoistAPI.Projects.Delete(project_ids)
 	return response, err
 }
+
+func (resource Resources) ShareProject(email string, project_id int64) (map[string]interface{}, error) {
+	response, err := resource.todoistAPI.Projects.Share(email, project_id)
+	return response, err
+}
+
+func (resource Resources) UnshareProject(email string, project_id int64) (map[string]interface{}, error) {
+	response, err := resource.todoistAPI.Projects.Unshare(email, project_id)
+	return response, err
+}

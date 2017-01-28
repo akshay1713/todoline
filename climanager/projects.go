@@ -2,6 +2,7 @@ package climanager
 
 import (
 	"fmt"
+	"strconv"
 )
 
 func (cm CliManager) ListProjects() {
@@ -17,6 +18,10 @@ func (cm CliManager) ListProjects() {
 
 func (cm CliManager) AddProjects(project_names []string) {
 	response, err := cm.resources.AddProject(project_names)
+	name_ids := response["name_ids"].(map[string]int64)
+	for k, v := range name_ids {
+		fmt.Println(k + " " + strconv.FormatInt(v, 10))
+	}
 	if err != nil {
 		fmt.Println(err)
 	} else if response["status"] == "200 OK" {
@@ -63,5 +68,25 @@ func (cm CliManager) DeleteProjects(project_ids []int64) {
 		fmt.Println(err)
 	} else if response["status"] == "200 OK" {
 		fmt.Println("Deleted project(s) successfully")
+	}
+}
+
+func (cm CliManager) ShareProject(email string, project_id int64) {
+	response, err := cm.resources.ShareProject(email, project_id)
+	if err != nil {
+		fmt.Println("Error while sharing project:\n")
+		fmt.Println(err)
+	} else if response["status"] == "200 OK" {
+		fmt.Println("Shared project successfully")
+	}
+}
+
+func (cm CliManager) UnshareProject(email string, project_id int64) {
+	response, err := cm.resources.UnshareProject(email, project_id)
+	if err != nil {
+		fmt.Println("Error while unsharing project:\n")
+		fmt.Println(err)
+	} else if response["status"] == "200 OK" {
+		fmt.Println("Removed project collaborator successfully")
 	}
 }

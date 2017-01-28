@@ -2,6 +2,7 @@ package climanager
 
 import (
 	"fmt"
+	"strconv"
 )
 
 func (cm CliManager) ListItems() {
@@ -31,7 +32,10 @@ func (cm CliManager) ListItemsForProject(project_id int64) {
 
 func (cm CliManager) AddItems(item_names []string, project_id int64) {
 	response, err := cm.resources.AddItem(item_names, project_id)
-	fmt.Println(response)
+	name_ids := response["name_ids"].(map[string]int64)
+	for k, v := range name_ids {
+		fmt.Println(k + " " + strconv.FormatInt(v, 10))
+	}
 	if err != nil {
 		fmt.Println(err)
 	} else if response["status"] == "200 OK" {

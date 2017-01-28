@@ -34,7 +34,7 @@ func main() {
 					Action: func(c *cli.Context) error {
 						auth_token := getAuthToken()
 						cm := climanager.InitCliManager(auth_token)
-						project_names := c.Args().Tail()
+						project_names := c.Args()
 						file := c.String("file")
 						if file != "" {
 							names_from_file := readLine(file)
@@ -94,6 +94,38 @@ func main() {
 							project_ids = append(project_ids, id)
 						}
 						cm.DeleteProjects(project_ids)
+						return nil
+					},
+				},
+				{
+					Name:  "share",
+					Usage: "Share the given project with the given email",
+					Action: func(c *cli.Context) error {
+						auth_token := getAuthToken()
+						cm := climanager.InitCliManager(auth_token)
+						args := c.Args()
+						email := args.Get(0)
+						project_id, parse_err := strconv.ParseInt(args.Get(1), 10, 64)
+						if parse_err != nil {
+							fmt.Println(args.Get(1) + " is not a valid project id.")
+						}
+						cm.ShareProject(email, project_id)
+						return nil
+					},
+				},
+				{
+					Name:  "unshare",
+					Usage: "Remove the given collaborator from the given project",
+					Action: func(c *cli.Context) error {
+						auth_token := getAuthToken()
+						cm := climanager.InitCliManager(auth_token)
+						args := c.Args()
+						email := args.Get(0)
+						project_id, parse_err := strconv.ParseInt(args.Get(1), 10, 64)
+						if parse_err != nil {
+							fmt.Println(args.Get(1) + " is not a valid project id.")
+						}
+						cm.UnshareProject(email, project_id)
 						return nil
 					},
 				},
