@@ -143,10 +143,6 @@ func main() {
 							Name:  "file, f",
 							Usage: "File path for adding multiple items.",
 						},
-						cli.StringFlag{
-							Name:  "projectid, pid",
-							Usage: "project id to which the tasks need to be added.",
-						},
 					},
 					Action: func(c *cli.Context) error {
 						auth_token := getAuthToken()
