@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"github.com/akshaysingh1713/todoline/climanager"
+	"github.com/akshay1713/todoline/climanager"
 	"github.com/urfave/cli"
 	"os"
 	"strconv"

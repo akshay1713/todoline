@@ -1,7 +1,7 @@
 package resources
 
 import (
-	"github.com/akshaysingh1713/gotodoist"
+	"github.com/akshay1713/gotodoist"
 )
 
 func getTodoistAPI(auth_token string) gotodoist.TodoistAPI {

@@ -1,7 +1,7 @@
 package climanager
 
 import (
-	"github.com/akshaysingh1713/todoline/resources"
+	"github.com/akshay1713/todoline/resources"
 )
 
 type CliManager struct {
