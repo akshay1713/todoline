@@ -1,6 +1,7 @@
 package climanager
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 )
@@ -89,4 +90,37 @@ func (cm CliManager) UnshareProject(email string, project_id int64) {
 	} else if response["status"] == "200 OK" {
 		fmt.Println("Removed project collaborator successfully")
 	}
+}
+
+func (cm CliManager) ExportProjectItems() {
+	projects, err := cm.resources.GetAllProjects()
+	if err != nil {
+		fmt.Println("Error while getting projects")
+		fmt.Println(err)
+	}
+	project_items := map[string][]string{}
+	project_id_names := map[int64]string{}
+	project_id_names[90] = "rest"
+	var project_id int64
+	for _, project := range projects {
+		project_id = int64(project["id"].(float64))
+		project_id_names[project_id] = project["name"].(string)
+		project_items[project["name"].(string)] = []string{}
+	}
+	items, err := cm.resources.GetAllItems()
+	if err != nil {
+		fmt.Println("Error while getting items")
+		fmt.Println(err)
+	}
+
+	for _, item := range items {
+		project_id = int64(item["project_id"].(float64))
+		project_name := project_id_names[project_id]
+		project_items[project_name] = append(project_items[project_name], item["content"].(string))
+	}
+	project_items_json, marshal_err := json.MarshalIndent(project_items, "", " ")
+	if marshal_err != nil {
+		fmt.Println(marshal_err)
+	}
+	fmt.Println(string(project_items_json))
 }

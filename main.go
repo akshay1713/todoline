@@ -129,6 +129,16 @@ func main() {
 						return nil
 					},
 				},
+				{
+					Name:  "export",
+					Usage: "Export all projects to a json file",
+					Action: func(c *cli.Context) error {
+						auth_token := getAuthToken()
+						cm := climanager.InitCliManager(auth_token)
+						cm.ExportProjectItems()
+						return nil
+					},
+				},
 			},
 		},
 		{
@@ -215,7 +225,7 @@ func main() {
 				},
 				{
 					Name:  "delete",
-					Usage: "Delete the given project",
+					Usage: "Delete the given item",
 					Action: func(c *cli.Context) error {
 						auth_token := getAuthToken()
 						cm := climanager.InitCliManager(auth_token)
