@@ -124,3 +124,11 @@ func (cm CliManager) ExportProjectItems() {
 	}
 	fmt.Println(string(project_items_json))
 }
+
+func (cm CliManager) AddProjectNote(content string, project_id int64) {
+	response, err := cm.resources.AddProjectNote(content, project_id)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(response)
+}

@@ -139,6 +139,22 @@ func main() {
 						return nil
 					},
 				},
+				{
+					Name:  "add_note",
+					Usage: "Add a note to the given project",
+					Action: func(c *cli.Context) error {
+						auth_token := getAuthToken()
+						cm := climanager.InitCliManager(auth_token)
+						args := c.Args()
+						note_content := args.Get(0)
+						project_id, parse_err := strconv.ParseInt(args.Get(1), 10, 64)
+						if parse_err != nil {
+							fmt.Println(args.Get(1) + " is not a valid project id")
+						}
+						cm.AddProjectNote(note_content, project_id)
+						return nil
+					},
+				},
 			},
 		},
 		{
@@ -241,6 +257,22 @@ func main() {
 							item_ids = append(item_ids, id)
 						}
 						cm.DeleteItems(item_ids)
+						return nil
+					},
+				},
+				{
+					Name:  "add_note",
+					Usage: "Add a note to the given item",
+					Action: func(c *cli.Context) error {
+						auth_token := getAuthToken()
+						cm := climanager.InitCliManager(auth_token)
+						args := c.Args()
+						note_content := args.Get(0)
+						item_id, parse_err := strconv.ParseInt(args.Get(1), 10, 64)
+						if parse_err != nil {
+							fmt.Println(args.Get(1) + " is not a valid item id")
+						}
+						cm.AddItemNote(note_content, item_id)
 						return nil
 					},
 				},

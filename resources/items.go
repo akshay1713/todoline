@@ -25,3 +25,8 @@ func (resources Resources) DeleteItems(item_ids []int64) (map[string]interface{}
 	response, err := resources.todoistAPI.Items.Delete(item_ids)
 	return response, err
 }
+
+func (resources Resources) AddItemNote(content string, item_id int64) (map[string]interface{}, error) {
+	response, err := resources.todoistAPI.Items.AddNote(content, item_id)
+	return response, err
+}

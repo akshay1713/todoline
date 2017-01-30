@@ -83,3 +83,11 @@ func (cm CliManager) DeleteItems(item_ids []int64) {
 		fmt.Println("Deleted item(s) successfully")
 	}
 }
+
+func (cm CliManager) AddItemNote(content string, item_id int64) {
+	response, err := cm.resources.AddItemNote(content, item_id)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(response)
+}

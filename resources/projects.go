@@ -30,3 +30,8 @@ func (resource Resources) UnshareProject(email string, project_id int64) (map[st
 	response, err := resource.todoistAPI.Projects.Unshare(email, project_id)
 	return response, err
 }
+
+func (resources Resources) AddProjectNote(content string, project_id int64) (map[string]interface{}, error) {
+	response, err := resources.todoistAPI.Projects.AddNote(content, project_id)
+	return response, err
+}
